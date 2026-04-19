@@ -1,65 +1,77 @@
-import Image from "next/image";
+import Link from 'next/link';
+import { getLicitaciones } from '@/lib/mercadopublico';
+import LicitacionCard from '@/components/LicitacionCard';
 
-export default function Home() {
+export const revalidate = 300;
+
+export default async function Home() {
+  const data = await getLicitaciones({ estado: 'activas' });
+  const licitacionesRecientes = data.Listado.slice(0, 6);
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <div className="max-w-7xl mx-auto px-4 py-8">
+      {/* Hero */}
+      <section className="bg-gradient-to-r from-blue-900 to-blue-700 rounded-2xl p-8 mb-8 text-white">
+        <h1 className="text-3xl font-bold mb-2">Portal de Licitaciones</h1>
+        <p className="text-blue-100 mb-6">
+          Encuentra las mejores oportunidades de negocio con el Estado de Chile
+        </p>
+        <div className="flex flex-wrap gap-4">
+          <div className="bg-white/10 backdrop-blur rounded-lg px-6 py-4">
+            <p className="text-3xl font-bold">{data.Cantidad.toLocaleString('es-CL')}</p>
+            <p className="text-blue-200 text-sm">Licitaciones Activas</p>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+      </section>
+
+      {/* Stats */}
+      <section className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+        <Link
+          href="/licitaciones?estado=activas"
+          className="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow border-l-4 border-green-500"
+        >
+          <h3 className="text-gray-500 text-sm font-medium">Activas</h3>
+          <p className="text-2xl font-bold text-gray-900">{data.Cantidad.toLocaleString('es-CL')}</p>
+        </Link>
+
+        <Link
+          href="/licitaciones?estado=publicada"
+          className="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow border-l-4 border-blue-500"
+        >
+          <h3 className="text-gray-500 text-sm font-medium">Publicadas Hoy</h3>
+          <p className="text-2xl font-bold text-gray-900">Ver más</p>
+        </Link>
+
+        <Link
+          href="/licitaciones?estado=adjudicada"
+          className="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow border-l-4 border-purple-500"
+        >
+          <h3 className="text-gray-500 text-sm font-medium">Adjudicadas</h3>
+          <p className="text-2xl font-bold text-gray-900">Ver más</p>
+        </Link>
+      </section>
+
+      {/* Licitaciones Recientes */}
+      <section>
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-xl font-bold text-gray-900">Licitaciones Recientes</h2>
+          <Link
+            href="/licitaciones"
+            className="text-blue-900 hover:text-blue-700 font-medium flex items-center gap-1"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+            Ver todas
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </Link>
         </div>
-      </main>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {licitacionesRecientes.map((licitacion) => (
+            <LicitacionCard key={licitacion.CodigoExterno} licitacion={licitacion} />
+          ))}
+        </div>
+      </section>
     </div>
   );
 }
