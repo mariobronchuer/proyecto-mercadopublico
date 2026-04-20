@@ -1,16 +1,24 @@
 import { getOrdenesCompra, formatMonto } from '@/lib/mercadopublico';
 
-export const revalidate = 300;
+export const dynamic = 'force-dynamic';
 
 export default async function OrdenesPage() {
-  const data = await getOrdenesCompra({ estado: 'todos' });
+  let data;
+  try {
+    data = await getOrdenesCompra({ estado: 'aceptada' });
+  } catch {
+    data = { Cantidad: 0, Listado: [] };
+  }
+
+  const cantidad = data?.Cantidad ?? 0;
+  const listado = data?.Listado ?? [];
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-gray-900 mb-2">Órdenes de Compra</h1>
         <p className="text-gray-600">
-          Mostrando {data.Cantidad.toLocaleString('es-CL')} órdenes de compra
+          Mostrando {cantidad.toLocaleString('es-CL')} órdenes de compra
         </p>
       </div>
 
@@ -33,7 +41,7 @@ export default async function OrdenesPage() {
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-            {data.Listado.slice(0, 50).map((orden) => (
+            {listado.slice(0, 50).map((orden) => (
               <tr key={orden.Codigo} className="hover:bg-gray-50">
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-mono text-blue-700">
                   {orden.Codigo}
@@ -55,7 +63,7 @@ export default async function OrdenesPage() {
         </table>
       </div>
 
-      {data.Listado.length === 0 && (
+      {listado.length === 0 && (
         <div className="text-center py-12 bg-white rounded-xl shadow-md">
           <p className="text-gray-500">No se encontraron órdenes de compra.</p>
         </div>

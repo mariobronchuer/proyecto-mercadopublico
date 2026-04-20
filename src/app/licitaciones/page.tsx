@@ -4,7 +4,7 @@ import LicitacionCard from '@/components/LicitacionCard';
 import FilterBar from '@/components/FilterBar';
 import { EstadoLicitacion } from '@/types';
 
-export const revalidate = 300;
+export const dynamic = 'force-dynamic';
 
 interface Props {
   searchParams: Promise<{ estado?: string }>;
@@ -13,14 +13,23 @@ interface Props {
 export default async function LicitacionesPage({ searchParams }: Props) {
   const params = await searchParams;
   const estado = (params.estado as EstadoLicitacion) || 'activas';
-  const data = await getLicitaciones({ estado });
+
+  let data;
+  try {
+    data = await getLicitaciones({ estado });
+  } catch {
+    data = { Cantidad: 0, Listado: [] };
+  }
+
+  const cantidad = data?.Cantidad ?? 0;
+  const listado = data?.Listado ?? [];
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-gray-900 mb-2">Licitaciones</h1>
         <p className="text-gray-600">
-          Mostrando {data.Cantidad.toLocaleString('es-CL')} licitaciones {estado}
+          Mostrando {cantidad.toLocaleString('es-CL')} licitaciones {estado}
         </p>
       </div>
 
@@ -29,12 +38,12 @@ export default async function LicitacionesPage({ searchParams }: Props) {
       </Suspense>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {data.Listado.map((licitacion) => (
+        {listado.map((licitacion) => (
           <LicitacionCard key={licitacion.CodigoExterno} licitacion={licitacion} />
         ))}
       </div>
 
-      {data.Listado.length === 0 && (
+      {listado.length === 0 && (
         <div className="text-center py-12">
           <svg
             className="mx-auto h-12 w-12 text-gray-400"

@@ -2,11 +2,19 @@ import Link from 'next/link';
 import { getLicitaciones } from '@/lib/mercadopublico';
 import LicitacionCard from '@/components/LicitacionCard';
 
-export const revalidate = 300;
+export const dynamic = 'force-dynamic';
 
 export default async function Home() {
-  const data = await getLicitaciones({ estado: 'activas' });
-  const licitacionesRecientes = data.Listado.slice(0, 6);
+  let data;
+  try {
+    data = await getLicitaciones({ estado: 'activas' });
+  } catch {
+    data = { Cantidad: 0, Listado: [] };
+  }
+
+  const cantidad = data?.Cantidad ?? 0;
+  const listado = data?.Listado ?? [];
+  const licitacionesRecientes = listado.slice(0, 6);
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
@@ -18,7 +26,7 @@ export default async function Home() {
         </p>
         <div className="flex flex-wrap gap-4">
           <div className="bg-white/10 backdrop-blur rounded-lg px-6 py-4">
-            <p className="text-3xl font-bold">{data.Cantidad.toLocaleString('es-CL')}</p>
+            <p className="text-3xl font-bold">{cantidad.toLocaleString('es-CL')}</p>
             <p className="text-blue-200 text-sm">Licitaciones Activas</p>
           </div>
         </div>
@@ -31,7 +39,7 @@ export default async function Home() {
           className="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow border-l-4 border-green-500"
         >
           <h3 className="text-gray-500 text-sm font-medium">Activas</h3>
-          <p className="text-2xl font-bold text-gray-900">{data.Cantidad.toLocaleString('es-CL')}</p>
+          <p className="text-2xl font-bold text-gray-900">{cantidad.toLocaleString('es-CL')}</p>
         </Link>
 
         <Link
