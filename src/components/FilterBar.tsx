@@ -43,7 +43,7 @@ export default function FilterBar() {
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-md p-4 mb-6">
+    <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-4 mb-6">
       {/* Búsqueda */}
       <form onSubmit={handleFilter} className="mb-4">
         <div className="relative">
@@ -64,7 +64,7 @@ export default function FilterBar() {
           </svg>
           <button
             type="submit"
-            className="absolute right-2 top-1/2 -translate-y-1/2 bg-blue-900 text-white px-4 py-1.5 rounded-lg text-sm font-medium hover:bg-blue-800 transition-colors"
+            className="absolute right-2 top-1/2 -translate-y-1/2 bg-blue-600 text-white px-4 py-1.5 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors"
           >
             Buscar
           </button>
@@ -79,8 +79,8 @@ export default function FilterBar() {
             onClick={() => handleEstadoChange(e.value)}
             className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
               estado === e.value
-                ? 'bg-blue-900 text-white'
-                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                ? 'bg-blue-600 text-white'
+                : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
             }`}
           >
             {e.label}

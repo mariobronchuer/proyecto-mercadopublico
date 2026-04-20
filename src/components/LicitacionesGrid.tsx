@@ -22,22 +22,24 @@ export default function LicitacionesGrid({ licitaciones }: Props) {
 
   if (licitaciones.length === 0) {
     return (
-      <div className="text-center py-16 bg-white rounded-2xl shadow-md">
-        <svg
-          className="mx-auto h-16 w-16 text-gray-300"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={1.5}
-            d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-          />
-        </svg>
-        <h3 className="mt-4 text-lg font-medium text-gray-900">No hay licitaciones</h3>
-        <p className="mt-2 text-gray-500">
+      <div className="text-center py-16 bg-white rounded-2xl shadow-sm border border-slate-200">
+        <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto">
+          <svg
+            className="h-8 w-8 text-slate-400"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={1.5}
+              d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+        </div>
+        <h3 className="mt-4 text-lg font-medium text-slate-900">No hay licitaciones</h3>
+        <p className="mt-2 text-slate-500">
           No se encontraron licitaciones con los filtros seleccionados.
         </p>
       </div>
@@ -56,14 +58,14 @@ export default function LicitacionesGrid({ licitaciones }: Props) {
         <div className="mt-8 text-center">
           <button
             onClick={cargarMas}
-            className="bg-white text-blue-900 px-8 py-3 rounded-xl font-medium shadow-md hover:shadow-lg transition-all border border-blue-200 hover:border-blue-300"
+            className="bg-blue-600 text-white px-8 py-3 rounded-xl font-medium shadow-md hover:bg-blue-700 hover:shadow-lg transition-all"
           >
             Cargar más ({licitaciones.length - mostrar} restantes)
           </button>
         </div>
       )}
 
-      <p className="text-center text-gray-500 text-sm mt-4">
+      <p className="text-center text-slate-500 text-sm mt-4">
         Mostrando {licitacionesMostradas.length} de {licitaciones.length} licitaciones
       </p>
     </>

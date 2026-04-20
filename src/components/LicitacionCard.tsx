@@ -70,7 +70,7 @@ export default function LicitacionCard({ licitacion }: Props) {
 
         {/* Título */}
         <Link href={`/licitaciones/${licitacion.CodigoExterno}`}>
-          <h3 className="font-semibold text-gray-900 mb-3 line-clamp-2 min-h-[48px] group-hover:text-blue-900 transition-colors cursor-pointer">
+          <h3 className="font-semibold text-slate-900 mb-3 line-clamp-2 min-h-[48px] group-hover:text-blue-600 transition-colors cursor-pointer">
             {licitacion.Nombre}
           </h3>
         </Link>
@@ -105,7 +105,7 @@ export default function LicitacionCard({ licitacion }: Props) {
 
         {/* Monto */}
         {licitacion.MontoEstimado && (
-          <p className="text-lg font-bold text-blue-900 mb-3">
+          <p className="text-lg font-bold text-blue-600 mb-3">
             {formatMonto(licitacion.MontoEstimado)}
           </p>
         )}
@@ -145,10 +145,10 @@ export default function LicitacionCard({ licitacion }: Props) {
       </div>
 
       {/* Botones de acción */}
-      <div className="flex border-t border-gray-100">
+      <div className="flex border-t border-slate-100">
         <Link
           href={`/licitaciones/${licitacion.CodigoExterno}`}
-          className="flex-1 bg-gray-50 text-gray-700 text-center py-3 font-medium hover:bg-gray-100 transition-colors text-sm"
+          className="flex-1 bg-slate-50 text-slate-700 text-center py-3 font-medium hover:bg-slate-100 transition-colors text-sm"
         >
           Ver detalle
         </Link>
@@ -156,7 +156,7 @@ export default function LicitacionCard({ licitacion }: Props) {
           href={`https://www.mercadopublico.cl/Procurement/Modules/RFB/DetailsAcquisition.aspx?qs=oJvs7cY8pcnqw4SWBDQ/VQ==&IdLicitacion=${licitacion.CodigoExterno}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex-1 bg-blue-900 text-white text-center py-3 font-medium hover:bg-blue-800 transition-colors text-sm"
+          className="flex-1 bg-blue-600 text-white text-center py-3 font-medium hover:bg-blue-700 transition-colors text-sm"
         >
           Ver oficial
         </a>
